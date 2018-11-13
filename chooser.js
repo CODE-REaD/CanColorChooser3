@@ -1,6 +1,7 @@
 "use strict";
 // import {Component} from "//unpkg.com/can@5/core.min.mjs";
 import {Component, DefineMap} from "//unpkg.com/can@5/core.mjs";
+// import {Component, DefineMap} from "//unpkg.com/can@5/core.min.mjs";
 
 const release = "3.0";          // "Semantic" program version for end users
 document.title = "CanJS Color Chooser " + release;
@@ -235,12 +236,13 @@ Component.extend({
                 this.runDemo();     // Kick off demo
             }
         },
+        // Use CanJS 'value' capability to mutate color values rather than updating stateful list:
         finalColors: {
             value({listenTo, resolve}) {
                 var colors = resolve([]);
 
                 function initFinalColors() {
-                    console.log(`initFinalColors called, finalCols is ${this.finalCols}.`);
+                    // console.log(`initFinalColors called, finalCols is ${this.finalCols}.`);
                     colors.length = 0;
                     let red;
                     let grn;
@@ -455,26 +457,8 @@ Component.extend({
                 this.viewModel.baseCols = baseColSpec;
                 this.viewModel.finalCols = finalColSpec;
             },
-/*
-        "{viewModel} finalArray":
-        // finalArray update triggered by runDemo(); now select a color from it
-            function (viewModel, event, newValue) {
-                if (doDemo) {
-                    console.log("finalArray triggered demo update.");
-                    let nextFinalEl;
-                    const finalCellCt = this.viewModel.finalCols * this.viewModel.finalCols;
-
-                    do
-                        nextFinalEl = this.viewModel.finalArray[Math.trunc(Math.random() * finalCellCt)];
-                    while (nextFinalEl === this.viewModel.finalColor); // Force new random location
-
-                    this.viewModel.suggestedFinalColor = nextFinalEl;
-                    frameCount++;
-                }
-            },
-*/
         "{viewModel} suggestedFinalColor":
-        // suggestedFinalColor changed due to finalArray update (above); now restart runDemo()
+        // suggestedFinalColor changed due to finalColors update (above); now restart runDemo()
             function (viewModel, event, newValue) {
                 doDemo && this.viewModel.runDemo();
             }
